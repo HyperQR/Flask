@@ -15,9 +15,10 @@ module.exports = {
             })
             return;
         }
-        // Reason Kick
+
         try {
-            // Code to kick the member
+            // Code to Ban the member
+            // Reason Ban
             const target = message.mentions.users.first();
             const memberTarget = message.guild.members.cache.get(target.id);
             const messageArray = message.content.split(' ');

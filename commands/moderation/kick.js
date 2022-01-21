@@ -14,9 +14,9 @@ module.exports = {
             return;
         }
 
-        // Reason Kick
         try {
             // Code to kick the member
+            // Reason Kick
             const target = message.mentions.users.first();
             const memberTarget = message.guild.members.cache.get(target.id);
             const messageArray = message.content.split(' ');

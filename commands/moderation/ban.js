@@ -10,36 +10,34 @@ module.exports = {
                 .setTitle(`<a:cross:910840621097447475> You dont have the correct permissions!`)
                 .setDescription(`Sorry ${message.author} you dont have \`BAN_MEMBERS\``)
                 .setTimestamp();
-            message.channel.send({
+            message.reply({
                 embeds: [permsbad]
             })
-            return
+            return;
         }
-        // Code to kick the member
         // Reason Kick
         try {
-            const messageArray = message.content.split(' ');
-            const args = messageArray.slice(2).join(' ');
+            // Code to kick the member
             const target = message.mentions.users.first();
             const memberTarget = message.guild.members.cache.get(target.id);
+            const messageArray = message.content.split(' ');
+            const args = messageArray.slice(2).join(' ');
             if (args) {
                 const reasonbanembed = new Discord.MessageEmbed()
                     .setColor(`GREEN`)
                     .setTitle(`<a:tick:910903522663489556> ${target.tag} Was Banned!`)
-                    .setDescription(`Member: \`${target.tag}\` was bANNED \n For: \`${args}\``)
+                    .setDescription(`Member: \`${target.tag}\` was Banned \n For: \`${args}\``)
                     .addFields(
                         { name: `User's Discord`, value: `${target.tag}`, inline: true },
                         { name: `User's ID`, value: `${target.id}`, inline: true },
                         { name: 'Banned By', value: `${message.author.tag}`, inline: true },
                     )
                     .setTimestamp();
-                message.channel.send({
+                message.reply({
                     embeds: [reasonbanembed]
                 })
                 memberTarget.ban();
                 return;
-            } else {
-                message.channel.send("Please mention a user!")
             }
 
             // No Reason ban
@@ -65,7 +63,7 @@ module.exports = {
                 .setColor("RED")
                 .setTitle("There was a error!")
                 .setDescription(`Error details \n \`${err}\``)
-            message.channel.send({
+            message.reply({
                 embeds: [errrorembed]
             })
         }

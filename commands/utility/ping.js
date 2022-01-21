@@ -18,6 +18,7 @@ module.exports = {
                 .setColor(`RANDOM`)
                 .setTitle(`🏓 Pong!`)
                 .addFields(
+                    { name: `** Total Ping ** `, value: `${ping + api}ms`, inline: true },
                     { name: '**Latency**', value: `${ping}ms`, inline: true },
                     { name: `** API ** `, value: `${api}ms`, inline: true },
                     { name: `** Discord.js Version ** `, value: `${discordJSVersion}`, inline: true },

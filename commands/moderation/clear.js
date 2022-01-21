@@ -13,6 +13,7 @@ module.exports = {
             })
             return;
         }
+        try{
         if (!args[0]) return message.reply("Please enter the amount of messages that you want to clear");
         if (isNaN(args[0])) return message.reply("Please enter a real number!");
 
@@ -32,8 +33,17 @@ module.exports = {
                 { name: 'Cleared By', value: `${message.author.tag}`, inline: true },
             )
             .setTimestamp();
-        message.channel.send({
+        message.reply({
             embeds: [clearembed]
         })
+        } catch (err) {
+            const errrorembed = new Discord.MessageEmbed()
+                .setColor("RED")
+                .setTitle("There was a error!")
+                .setDescription(`Error details \n \`${err}\``)
+            message.reply({
+                embeds: [errrorembed]
+            })
+        }
     }
 }

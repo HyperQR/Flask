@@ -33,21 +33,38 @@ module.exports = {
         .addComponents([bRock, bPaper, bScissor]);
 
      // To send the Buttons and also a embed/message etc works as the normal v13 ways :)
-      message.channel.send({
+      message.reply({
         content: `I have choicen ${botChoice}, you only know this for a test`, components: [Buttons]
       })
 
      // Now to collect the buton clicks
-      collector.on('collect', async i => {
-        if (i.customId === 'rock') { // This checks if you clicked the Rock button, it says rock in because i have the rock id as rock, this is changable
+       collector.on('collect', async i => {
+        if (customId === 'rock') { // This checks if you clicked the Rock button, it says rock in because i have the rock id as rock, this is changable
           await i.deferUpdate(); // Checks for button clicks
-          await wait(250); // It waits to send the message because it looks smoother i guess i dont realy know why i just like it you can take this line out if you would like too
+          //await wait(250); // It waits to send the message because it looks smoother i guess i dont realy know why i just like it you can take this line out if you would like too
+          
           if (botChoice === '🪨') { // Now this is where it reacts, so if the bot has picked '🪨' form line 10 then picked it again form line 11 it will do what ever u want it too do after that, so put what u want the bot to do in line 44
             await message.channel.send({ content: 'picked that too' }) // This is changeable as the line above says
           }
+
+          if (botChoice === '📰') {
+            await message.channel.send({ content: 'HaHa I win' })
+          }
+
+          if (botChoice === '✂️') {
+            await message.channel.send({ content: 'oh, you win' })
+          }
           // await i.editReply({ content: 'A button was clicked!', components: [] }); this is for testing, this will also be take out in latter updates 
         }
-      });
+     });
+
+   //   const channelID = '930417108523835402' // Channel ID for it to type in
+  //    collector.on('end', collected => client.channels.fetch(channelID)
+   //     .then(channel => {
+   //      channel.send({
+      //      content: `A Button was clicked **${collected.size}** Times.`
+      //    })
+     //   })); // This checks now many times a button was clicked in the command in the space of 30 secondes i know its bad to make it console log nothing i just dont want console getting packed with logs, might update this to make it do other stuff, like type in a channel i dont know
 
       collector.on('end', collected => console.log(``)); // This checks now many times a button was clicked in the command in the space of 30 secondes i know its bad to make it console log nothing i just dont want console getting packed with logs, might update this to make it do other stuff, like type in a channel i dont know
     }

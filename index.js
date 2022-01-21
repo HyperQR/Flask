@@ -105,6 +105,12 @@ client.on('message', message => {
     } if (command === 'rps') {
         client.commands.get('rps').execute(message, client, args, Discord)
     }
+    if (command === 'test') {
+        client.commands.get('test').execute(message, client, args, Discord)
+    }
+    if (command === 'test2') {
+        client.commands.get('test2').execute(message, client, args, Discord)
+    }
 })
 
 client.on("guildCreate", async (guild) => {

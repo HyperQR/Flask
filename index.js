@@ -111,6 +111,9 @@ client.on('message', message => {
     if (command === 'test2') {
         client.commands.get('test2').execute(message, client, args, Discord)
     }
+    if (command === 'add') {
+        client.commands.get('add').execute(message, client, args, Discord)
+    }
 })
 
 client.on("guildCreate", async (guild) => {

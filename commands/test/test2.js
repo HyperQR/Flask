@@ -6,7 +6,7 @@ module.exports = {
         if (perms.primeguilds.includes(message.guild.id)) {
             message.channel.send("Congrats Your Guild is a prime guild!")
         }else{
-            message.channel.send("Sad :( You arent a prim guild ")
+            message.channel.send("Sad :( You arent a prime guild ")
         }
         if (perms.prime.includes(message.author.id)) {
             message.channel.send("Congrats Your Guild is a prime user!")

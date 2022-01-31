@@ -7,9 +7,10 @@ const client = new Client({ intents: [Intents.FLAGS.GUILDS, Intents.FLAGS.GUILD_
 const fs = require('fs'); //npm i fs
 
 //This code is for reading commands on luanch 
-const Status = require('./config/Status.js');
-const config = require('../flask-config/config.json');
+const Status = require('./config/Status.js')
+const config = require('../flask-config/config.json')
 const prefixchecker = require('../flask-config/config.json')
+const guildlogs = require('./settings/logs/guild.json')
 const token = config.token;
 const configprefix = prefixchecker.prefix;
 client.commands = new Discord.Collection();
@@ -42,6 +43,9 @@ loadCommandsFromFolder('./commands/fun');
 
 // Load commands from folder './commands/ownercmds
 loadCommandsFromFolder('./commands/ownercmds');
+
+// Load commands from folder './commands/settings
+loadCommandsFromFolder('./commands/settings');
 
 //Prefix for bot
 const prefix = configprefix;
@@ -114,10 +118,21 @@ client.on('message', message => {
     if (command === 'add') {
         client.commands.get('add').execute(message, client, args, Discord)
     }
+    if (command === 'check') {
+        client.commands.get('check').execute(message, client, args, Discord)
+    }    
+    if (command === 'settings') {
+        client.commands.get('settings').execute(message, client, args, Discord)
+    }
+    if (command === 'embeds') {
+        client.commands.get('embeds').execute(message, client, args, Discord)
+    }
+    if (command === 'promo') {
+        client.commands.get('promo').execute(message, client, args, Discord)
+    }
 })
 
 client.on("guildCreate", async (guild) => {
-    const channelID = '911303957358456932'
     const joinembed = new Discord.MessageEmbed()
         .setColor("RANDOM")
         .setThumbnail(guild.iconURL({ dynamic: true }))
@@ -128,7 +143,7 @@ client.on("guildCreate", async (guild) => {
         .addField("Owner Mention", `<@${guild.ownerId}>`, true)
         .addField("Member Count", guild.memberCount.toString(), true)
 
-    client.channels.fetch(channelID)
+    client.channels.fetch(guildlogs.guild)
         .then(channel => {
             channel.send({
                 embeds: [joinembed]
@@ -139,8 +154,7 @@ client.on("guildCreate", async (guild) => {
         });
 });
 client.on("guildDelete", async (guild) => {
-    //All this does is reports back to us for analytics, this is only accessed by @juaneth and @Ohmeg and nobody else can access these stats
-    const channelID = '911304396317552640'
+    //All this does is reports back to us for analytics, this is only accessed by @Ohmeg & the staff team also nobody else can access these stats
     const leaveembed = new Discord.MessageEmbed()
         .setColor("RANDOM")
         .setThumbnail(guild.iconURL({ dynamic: true }))
@@ -151,7 +165,7 @@ client.on("guildDelete", async (guild) => {
         .addField("Owner Mention", `<@${guild.ownerId}>`, true)
         .addField("Member Count", guild.memberCount.toString(), true)
 
-    client.channels.fetch(channelID)
+    client.channels.fetch(guildlogs.guild)
         .then(channel => {
             channel.send({
                 embeds: [leaveembed]

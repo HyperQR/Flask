@@ -10,10 +10,12 @@ const fs = require('fs'); //npm i fs
 const Status = require('./config/Status.js')
 const config = require('../flask-config/config.json')
 const prefixchecker = require('../flask-config/config.json')
-const guildlogs = require('./settings/logs/guild.json')
 const token = config.token;
 const configprefix = prefixchecker.prefix;
 client.commands = new Discord.Collection();
+
+//Logs
+const logs = require('./settings/logs/logs.json')
 
 // Define a function to load commands from a specific given folder
 function loadCommandsFromFolder(folder) {
@@ -104,8 +106,8 @@ client.on('message', message => {
     if (command === 'devtools') {
         client.commands.get('devtools').execute(message, client, args, Discord)
     }
-     if (command === 'cah') {
-          client.commands.get('cah').execute(message, client, args, Discord)
+    if (command === 'cah') {
+        client.commands.get('cah').execute(message, client, args, Discord)
     } if (command === 'rps') {
         client.commands.get('rps').execute(message, client, args, Discord)
     }
@@ -120,7 +122,7 @@ client.on('message', message => {
     }
     if (command === 'check') {
         client.commands.get('check').execute(message, client, args, Discord)
-    }    
+    }
     if (command === 'settings') {
         client.commands.get('settings').execute(message, client, args, Discord)
     }
@@ -129,6 +131,9 @@ client.on('message', message => {
     }
     if (command === 'promo') {
         client.commands.get('promo').execute(message, client, args, Discord)
+    }
+    if (command === 'test3') {
+        client.commands.get('test3').execute(message, client, args, Discord)
     }
 })
 
@@ -143,7 +148,7 @@ client.on("guildCreate", async (guild) => {
         .addField("Owner Mention", `<@${guild.ownerId}>`, true)
         .addField("Member Count", guild.memberCount.toString(), true)
 
-    client.channels.fetch(guildlogs.guild)
+    client.channels.fetch(logs['Leave/join'])
         .then(channel => {
             channel.send({
                 embeds: [joinembed]
@@ -165,7 +170,7 @@ client.on("guildDelete", async (guild) => {
         .addField("Owner Mention", `<@${guild.ownerId}>`, true)
         .addField("Member Count", guild.memberCount.toString(), true)
 
-    client.channels.fetch(guildlogs.guild)
+    client.channels.fetch(logs['Leave/join'])
         .then(channel => {
             channel.send({
                 embeds: [leaveembed]
@@ -174,6 +179,33 @@ client.on("guildDelete", async (guild) => {
         .catch(err => {
             console.error(`\nError sending guildCreate message:\n${err}`);
         });
+});
+
+client.on('messageDelete', async message => {
+    // Ignore direct messages
+    let logsguild = logs.guild
+    if (!logsguild) return;
+    const fetchedLogs = await message.guild.fetchAuditLogs({
+        limit: 1,
+        type: 'MESSAGE_DELETE',
+    });
+    // Since there's only 1 audit log entry in this collection, grab the first one
+    const deletionLog = fetchedLogs.entries.first();
+
+    // Perform a coherence check to make sure that there's *something*
+    if (!deletionLog) return console.log(`A message by ${message.author.tag} was deleted, but no relevant audit logs were found.`);
+
+    // Now grab the user object of the person who deleted the message
+    // Also grab the target of this action to double-check things
+    const { executor, target } = deletionLog;
+
+    // Update the output with a bit more information
+    // Also run a check to make sure that the log returned was for the same author's message
+    if (target.id === message.author.id) {
+        console.log(`A message by ${message.author.tag} was deleted by ${executor.tag}.`);
+    } else {
+        console.log(`A message by ${message.author.tag} was deleted, but we don't know by who.`);
+    }
 });
 
 //Bot token below to get token go to: https://discord.com/developers/applications

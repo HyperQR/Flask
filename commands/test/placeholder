@@ -1,1 +1,7 @@
-placeholder
+module.exports = {
+    name: 'test',
+    description: 'for testing commands',
+    execute(message, client, args, Discord) {
+        message.channel.send("This is a test preset")
+    }
+}

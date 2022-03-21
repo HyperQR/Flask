@@ -1,4 +1,3 @@
-const channels = require('../../settings/logs/temp.json')
 module.exports = {
     name: "embeds",
     description: "sends embeds",
